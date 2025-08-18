@@ -13,6 +13,7 @@ AI-powered Telegram shopping assistant with Crossmint wallet integration for sea
 
 ## ⚡ Quick Start
 
+### 🚀 Super Quick Start (Recommended)
 ```bash
 # 1. Clone and install
 git clone <your-repo-url>
@@ -24,17 +25,33 @@ npm run setup
 
 # 3. Get your API keys (see detailed instructions below)
 # 4. Update .env and web-interface/.env.local with your keys
+
+# 5. One command to start everything!
+npm run dev:full
+```
+
+This automatically:
+- ✅ Starts ngrok tunnels
+- ✅ Updates all environment files with ngrok URLs
+- ✅ Starts both development servers
+
+### 📝 Manual Quick Start
+```bash
+# 1-4. Same as above
+
 # 5. Start ngrok tunnels
 ngrok start --all --config ngrok.yml
 
-# 6. Update environment files with ngrok URLs
+# 6. Auto-update environment files with ngrok URLs
+npm run update-urls
+
 # 7. Start the application
 npm run dev:all
 ```
 
 ## 📋 Prerequisites
 
-- **Node.js** 18+ 
+- **Node.js** 18+
 - **npm** or **yarn**
 - **ngrok** account (for local development)
 - **Telegram Bot Token** (from @BotFather)
@@ -91,12 +108,12 @@ This will:
 #### Telegram Bot Token
 1. Message [@BotFather](https://t.me/BotFather) on Telegram
 2. Create new bot: `/newbot`
-3. Follow prompts and save your bot token
+3. Follow prompts and save your bot token in `.env` in root directory
 
 #### OpenAI API Key
 1. Go to [OpenAI Platform](https://platform.openai.com/api-keys)
 2. Create new API key
-3. Save the key (starts with `sk-`)
+3. Save the key (starts with `sk-`) in `.env` in root directory
 
 #### Crossmint API Keys
 1. Sign up at [Crossmint Console](https://staging.crossmint.com)
@@ -145,8 +162,10 @@ ngrok config add-authtoken YOUR_NGROK_AUTHTOKEN
 ```
 
 ### 3. Start ngrok Tunnels
+We've included a `ngrok.yml` configuration file in root.
 
-We've included a `ngrok.yml` configuration file. Start both tunnels:
+1. Add your auth token to `ngrok.yml` file
+2. Start both tunnels:
 
 ```bash
 # Start ngrok with our configuration
@@ -226,8 +245,10 @@ You should see Amazon products with "Buy with Crossmint" buttons.
 ### Bot Scripts
 ```bash
 npm run setup            # Quick setup - copy environment files
+npm run update-urls      # Auto-update ngrok URLs in environment files
+npm run dev:full         # 🚀 Start everything (ngrok + URL updates + servers)
 npm run dev:bot          # Start bot in development mode
-npm run dev:web          # Start web interface in development mode  
+npm run dev:web          # Start web interface in development mode
 npm run dev:all          # Start both bot and web interface
 npm run build            # Build both bot and web interface
 npm run start            # Start production build
@@ -315,7 +336,7 @@ npm run start            # Start production server
 
 ## 👷 Support
 
-Join our [telegram chat](https://t.me/+FmKl2FsaRKIzZjlk) if you have any questions. 
+Join our [telegram chat](https://t.me/+FmKl2FsaRKIzZjlk) if you have any questions.
 
 ## 🤝 Contributing
 
@@ -331,4 +352,4 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ---
 
-**Ready to revolutionize shopping with AI! 🛒🤖** 
+**Ready to revolutionize shopping with AI! 🛒🤖**
