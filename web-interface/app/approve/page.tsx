@@ -3,7 +3,7 @@
 import { useState, useEffect, useCallback, Suspense } from 'react';
 import { useSearchParams } from 'next/navigation';
 import { 
-  useAuth,
+  useCrossmintAuth,
   useWallet,
   CrossmintProvider
 } from '@crossmint/client-sdk-react-ui';
@@ -141,7 +141,7 @@ const CLIENT_API_KEY = process.env.NEXT_PUBLIC_CROSSMINT_CLIENT_API_KEY;
 // Main Approval Component
 function ApprovalPage() {
   const searchParams = useSearchParams();
-  const { user, login } = useAuth();
+  const { user, login } = useCrossmintAuth();
   const { wallet } = useWallet();
   
   const [approvalData, setApprovalData] = useState<any>(null);
@@ -620,4 +620,4 @@ export default function Approve() {
             </Suspense>
         </CrossmintProvider>
     );
-} 
+}

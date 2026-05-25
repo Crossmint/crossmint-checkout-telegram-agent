@@ -29,7 +29,7 @@ export function Providers({ children }: { children: React.ReactNode }) {
             showPasskeyHelpers={chain !== "solana"}
             createOnLogin={{
               chain: chain as any,
-              signer: { type: chain === "solana" ? "email" : "passkey" },
+              recovery: { type: chain === "solana" ? "email" : "passkey" },
             }}
           >
             {children}
@@ -38,4 +38,4 @@ export function Providers({ children }: { children: React.ReactNode }) {
       </CrossmintProvider>
     </QueryClientProvider>
   );
-} 
+}

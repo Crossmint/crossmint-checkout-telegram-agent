@@ -1,7 +1,29 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { type DelegatedSigner, useWallet } from "@crossmint/client-sdk-react-ui";
+import { useWallet } from "@crossmint/client-sdk-react-ui";
+
+type DelegatedSigner = {
+  signer: string;
+};
+
+function signerAddress(signer: unknown): string | null {
+  if (typeof signer === "string") {
+    return signer;
+  }
+
+  if (signer && typeof signer === "object") {
+    const record = signer as Record<string, unknown>;
+    return (
+      (typeof record.signer === "string" && record.signer) ||
+      (typeof record.address === "string" && record.address) ||
+      (typeof record.locator === "string" && record.locator) ||
+      null
+    );
+  }
+
+  return null;
+}
 
 // Bot signer address from your environment
 const BOT_SIGNER_ADDRESS = "0x9AF659Ef26583C0793c35C52E076FBeA6486E31d";
@@ -18,8 +40,19 @@ export function DelegationComponent() {
     if (!wallet) return;
     
     try {
-      const signers = await wallet.delegatedSigners();
-      setPermissions(signers);
+      const walletWithSigners = wallet as unknown as {
+        delegatedSigners?: () => Promise<unknown[]>;
+        signers?: () => Promise<unknown[]>;
+      };
+      const signers = walletWithSigners.delegatedSigners
+        ? await walletWithSigners.delegatedSigners()
+        : await walletWithSigners.signers?.();
+      setPermissions(
+        (signers ?? [])
+          .map((signer) => signerAddress(signer))
+          .filter((signer): signer is string => signer != null)
+          .map((signer) => ({ signer }))
+      );
       setError(null);
     } catch (err) {
       console.error("Error fetching delegated signers:", err);
@@ -45,7 +78,20 @@ export function DelegationComponent() {
       setIsLoading(true);
       setError(null);
       
-      await wallet.addDelegatedSigner({ signer: BOT_SIGNER_ADDRESS });
+      const walletWithSignerMutation = wallet as unknown as {
+        addDelegatedSigner?: (params: { signer: string }) => Promise<unknown>;
+        addSigner?: (params: { type: "external-wallet"; address: string }) => Promise<unknown>;
+      };
+      if (walletWithSignerMutation.addDelegatedSigner) {
+        await walletWithSignerMutation.addDelegatedSigner({ signer: BOT_SIGNER_ADDRESS });
+      } else if (walletWithSignerMutation.addSigner) {
+        await walletWithSignerMutation.addSigner({
+          type: "external-wallet",
+          address: BOT_SIGNER_ADDRESS,
+        });
+      } else {
+        throw new Error("Connected wallet does not expose delegated signer methods");
+      }
       
       // Refresh permissions
       await fetchPermissions();
@@ -183,4 +229,4 @@ export function DelegationComponent() {
       )}
     </div>
   );
-} 
+}
