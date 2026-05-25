@@ -1,6 +1,6 @@
 "use client";
 
-import { useAuth } from "@crossmint/client-sdk-react-ui";
+import { useCrossmintAuth } from "@crossmint/client-sdk-react-ui";
 import { useSearchParams, useRouter } from 'next/navigation';
 import { useState } from 'react';
 import axios from 'axios';
@@ -23,7 +23,7 @@ function parseBotState(encodedState: string | null): { userId: number } | null {
 }
 
 export function LogoutButton() {
-  const { logout } = useAuth();
+  const { logout } = useCrossmintAuth();
   const searchParams = useSearchParams();
   const router = useRouter();
   const [isLoggingOut, setIsLoggingOut] = useState(false);
@@ -77,4 +77,4 @@ export function LogoutButton() {
       {isLoggingOut ? 'Logging out...' : 'Log out'}
     </Button>
   );
-} 
+}

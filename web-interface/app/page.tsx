@@ -1,6 +1,6 @@
 "use client";
 
-import { useAuth, useWallet } from "@crossmint/client-sdk-react-ui";
+import { useCrossmintAuth, useWallet } from "@crossmint/client-sdk-react-ui";
 import { useEffect, useState, Suspense } from 'react';
 import { useSearchParams, useRouter } from 'next/navigation';
 import axios from 'axios';
@@ -27,7 +27,7 @@ function parseBotState(encodedState: string | null): { userId: number } | null {
 
 function HomeContent() {
   const { wallet, status: walletStatus } = useWallet();
-  const { login, status: authStatus, user, jwt } = useAuth();
+  const { login, status: authStatus, user, jwt } = useCrossmintAuth();
   const router = useRouter();
   const searchParams = useSearchParams();
 
@@ -145,4 +145,4 @@ export default function Home() {
             </footer>
         </div>
     );
-} 
+}

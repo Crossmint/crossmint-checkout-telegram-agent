@@ -7,7 +7,7 @@ import {
   useCrossmintCheckout,
   CrossmintCheckoutProvider,
   CrossmintProvider,
-  useAuth
+  useCrossmintAuth
 } from '@crossmint/client-sdk-react-ui';
 import { Button } from '@/components/ui/button';
 import axios from 'axios';
@@ -306,7 +306,7 @@ function Checkout({
 // Main TopUp Component
 function TopUpPage() {
   const searchParams = useSearchParams();
-  const { user } = useAuth();
+  const { user } = useCrossmintAuth();
   const [userId, setUserId] = useState<number | null>(null);
   const [walletAddress, setWalletAddress] = useState<string | null>(null);
   const [userEmail, setUserEmail] = useState<string | null>(null);
@@ -525,4 +525,4 @@ export default function TopUp() {
             </CrossmintCheckoutProvider>
         </CrossmintProvider>
     )
-} 
+}
